@@ -84,19 +84,23 @@ We want to model how the ice-off date changes over time. Our approach in this mo
 What do you expect the sign (plus, minus, or no change) to be for the slope of the relationship? Why?
 
 **Answer 2:**
+I expect the slope to be negative. If we suspect temperatures have been warming slowly over time, then ice should melt earlier in the year. This should mean the ice-off day of year would decrease which would show a negative slope. 
+
 
 Use the `lm` function to predict `ice_off_doy` as a function (`~`) of the year for the data.frame called `sunapee`. You can learn more about the `lm` function [here](https://www.datacamp.com/tutorial/linear-regression-R)
 
 Create an object called `fit` that contains the results of the linear model.
 
 ```{r}
+fit <- lm(ice_off_doy ~ year, data = sunapee)
 
+summary(fit)
 ```
 
 Then, use the function `summary` to explore the result of the `lm` function.
 
 ```{r}
-
+summary(fit)
 ```
 
 The results of your linear model are in an object named `fit`, so you can find the regression coefficients at `fit$coefficients[1]` (the intercept) and `fit$coefficients[2]` (the slope). Confirm that `fit$coefficients[1]` and `fit$coefficients[2]` match the values expected from the summary command you ran above.
@@ -111,6 +115,7 @@ fit$coefficients[2]
 What is the direction of the slope? How does this match your expectations from Question 2?
 
 **Answer 3:**
+The slope is negative. That means the ice is melting earlier as the years go on. This is what I expected because if it’s getting warmer, the ice would melt sooner each year.
 
 # Is our model any good?
 
