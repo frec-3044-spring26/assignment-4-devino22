@@ -48,8 +48,11 @@ library(tidyverse)
 sunapee <- ice_data |>
   filter(lake_name == "Sunapee")
 
-head(sunapee) #just shows the first six rows to see if it filtered right
-nrow(sunapee) #just shows how many rows of data I have
+sunapee <- sunapee |>
+  mutate(ice_off_doy = as.numeric(ice_off_doy))
+
+head(sunapee)
+nrow(sunapee)
 ```
 
 You will be using the `sunapee` data for the rest of the module until Question 11
