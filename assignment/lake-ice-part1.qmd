@@ -147,9 +147,21 @@ We will use a histogram to visually assess whether this requirement is met. Firs
 You will use a histogram to examine the residuals. First, the code uses the coefficients to predict the yearly ice-off DOY. Second, calculate the residuals by subtracting the predicted ice-off DOY from the observed DOY.
 
 ```{r}
-sunapee <- sunapee %>% 
+sunapee <- sunapee |>
+  mutate(ice_off_doy = as.numeric(ice_off_doy))
+
+
+sunapee <- sunapee |>
   mutate(predicted = fit$coefficients[1] + year * fit$coefficients[2], 
          residual = ice_off_doy - predicted) #Observed - Predicted
+
+ggplot(sunapee, aes(x = residual)) +
+  geom_histogram(binwidth = 10) +
+  labs(
+    title = "Histogram of Residuals",
+    x = "Residual (Observed - Predicted)",
+    y = "Count"
+  )
 ```
 
 **Question 5:**
@@ -159,7 +171,13 @@ Use the [`add_predictions()`](https://modelr.tidyverse.org/reference/add_predict
 **Answer 5:**
 
 ```{r}
+library(modelr)
 
+sunapee <- sunapee |>
+  add_predictions(fit) |>
+  add_residuals(fit)
+
+head(sunapee)
 ```
 
 Now, to visualize the residuals, use `geom_histogram()` to plot them as a histogram. I recommend using a bin width of 10 in the histogram.
