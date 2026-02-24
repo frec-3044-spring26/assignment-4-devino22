@@ -1,6 +1,6 @@
 ---
 title: "Lake Ice Phenology: Part 1"
-author: 'YOUR NAME'
+author: 'Devin Ong'
 format:
   html:
     embed-resources: true
@@ -94,13 +94,13 @@ Create an object called `fit` that contains the results of the linear model.
 ```{r}
 fit <- lm(ice_off_doy ~ year, data = sunapee)
 
-summary(fit)
+
 ```
 
 Then, use the function `summary` to explore the result of the `lm` function.
 
 ```{r}
-summary(fit)
+
 ```
 
 The results of your linear model are in an object named `fit`, so you can find the regression coefficients at `fit$coefficients[1]` (the intercept) and `fit$coefficients[2]` (the slope). Confirm that `fit$coefficients[1]` and `fit$coefficients[2]` match the values expected from the summary command you ran above.
@@ -128,6 +128,7 @@ First, it is important to understand how much variation is explained by the mode
 What is the R2 for the regression? Based on the R2, is `year` and `ice_off_doy` strongly related?
 
 **Answer 4:**
+The R² for the regression is 0.205. This means year explains about 20.5% of the changes in ice-off DOY, so year and ice_off_doy are not strongly related, but there is still a noticeable trend.
 
 ## Residuals normally distributed
 
@@ -179,7 +180,7 @@ Now, to visualize the residuals, use `geom_histogram()` to plot them as a histog
 Show Histogram and answer the following question: do the residuals meet the assumptions of the linear regression? (are the residuals normally distributed with the distribution centered around zero)?
 
 **Answer 6:**
-
+The residuals look centered around zero and are roughly bell-shaped. They are not perfectly normal, but they are close enough that the linear regression assumptions are reasonably met.
 ```{r}
 ggplot(sunapee, aes(x = resid)) +
   geom_histogram(binwidth = 10) +
@@ -211,6 +212,7 @@ A slope value could have a low probability of being 0 (thus we have a strong bel
 Based on the slope value, how many more years are needed to pass before the lake has a 1 week change in ice off doy? Do you think this is meaningful? Why?
 
 **Answer 8:**
+The slope is about −0.106 days per year. A 1-week change is 7 days, so it would take about 7 / 0.106 ≈ 66 years to shift by one week. I think this is meaningful because a one-week shift over several decades is a noticeable long-term change.
 
 ## Overall model assessment
 
@@ -219,6 +221,7 @@ Based on the slope value, how many more years are needed to pass before the lake
 How comfortable are you proceeding with using this linear model for additional analysis and prediction? Why? (I am not looking for your gut answer, rather I want you to apply concepts taught in this module to justify your answer)
 
 **Answer 9:**
+I feel pretty comfortable using this model to see the overall trend over time, but not for making very exact predictions. The slope is statistically significant, which means the change over time is real and not just random. The residuals are centered around zero, so the model is not biased. However, the R² is only 0.205, which means year does not explain most of the ups and downs in ice-off dates. Because of that, predictions for a specific future year could still be off by quite a bit.
 
 **Question 10:**
 Now plot the data for Lake Sunapee (just like above - year on x-axis vs. ice of doy on y axis) but add the line from your regression results (e.g., fit intercept and slope). You will use the [`geom_abline`](https://ggplot2.tidyverse.org/reference/geom_abline.html). 
@@ -251,6 +254,7 @@ The goal of this question is to make a forecast of the future ice-off day (with 
 - How wide is your confidence interval (number of days)?
 
 **Answer 11:**
+The predicted ice-off day of year in 2040 is 102.66. The 5% and 95% residual quantiles are −19.43 and 14.15, respectively. Adding these to the prediction gives a 90% confidence interval of 83.23 to 116.81. The width of the confidence interval is 33.58 days.
 
 ```{r}
 # Predict ice-off DOY in 2040 using y = b + m*x
@@ -278,13 +282,14 @@ To answer this question, you need to divide the Sunapee dataset into two dataset
 
 **Question 12:**
 
-Use the skills developed above to evaluate the question "Is the ice-off day of year changing more quickly in more recent years at Lake Sunapee?"
-Yes, the ice-off day of year is changing more quickly in recent years.
-Before 1970, the slope is about −0.110 days/year, and from 1970 onward the slope is about −0.302 days/year. Because the more recent slope is more negative (larger magnitude), it shows that ice-off is happening earlier faster in the more recent period.
+Use the skills developed above to evaluate the question "Is the ice-off day of year changing more quickly in more recent years at Lake Sunapee?" (Answered analysis Below)
 
 **Answer 12:**
 
-Use a mix of code, figures, and text to present your analysis.  If you want to compare slopes, be sure they are on the same plot. Code provided here, analysis is above. 
+Use a mix of code, figures, and text to present your analysis.  If you want to compare slopes, be sure they are on the same plot. 
+
+Yes, the ice-off day of year is changing more quickly in recent years.
+Before 1970, the slope is about −0.110 days/year, and from 1970 onward the slope is about −0.302 days/year. Because the more recent slope is more negative (larger magnitude), it shows that ice-off is happening earlier faster in the more recent period.
 
 ```{r}
 early <- sunapee |> filter(year < 1970)
