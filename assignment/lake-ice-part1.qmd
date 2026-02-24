@@ -279,11 +279,33 @@ To answer this question, you need to divide the Sunapee dataset into two dataset
 **Question 12:**
 
 Use the skills developed above to evaluate the question "Is the ice-off day of year changing more quickly in more recent years at Lake Sunapee?"
+Yes, the ice-off day of year is changing more quickly in recent years.
+Before 1970, the slope is about −0.110 days/year, and from 1970 onward the slope is about −0.302 days/year. Because the more recent slope is more negative (larger magnitude), it shows that ice-off is happening earlier faster in the more recent period.
 
 **Answer 12:**
 
-Use a mix of code, figures, and text to present your analysis.  If you want to compare slopes, be sure they are on the same plot.
+Use a mix of code, figures, and text to present your analysis.  If you want to compare slopes, be sure they are on the same plot. Code provided here, analysis is above. 
 
+```{r}
+early <- sunapee |> filter(year < 1970)
+late  <- sunapee |> filter(year >= 1970)
+
+fit_early <- lm(ice_off_doy ~ year, data = early)
+fit_late  <- lm(ice_off_doy ~ year, data = late)
+
+coef(fit_early)
+coef(fit_late)
+
+ggplot(sunapee, aes(x = year, y = ice_off_doy)) +
+  geom_point() +
+  geom_abline(intercept = coef(fit_early)[1], slope = coef(fit_early)[2], linewidth = 1) +
+  geom_abline(intercept = coef(fit_late)[1],  slope = coef(fit_late)[2], linewidth = 1) +
+  labs(
+    title = "Lake Sunapee Ice-off DOY: Trends Before vs After 1970",
+    x = "Year",
+    y = "Ice-off Day of Year (DOY)"
+  )
+```
 # Rendering and committing
 
 Remember to Render your document as HTML and comment+push to GitHub your code and rendered HTML that was created when you rendered the document. Your GitHub repository should have multiple commits with informative commit messages.
