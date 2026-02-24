@@ -253,7 +253,23 @@ The goal of this question is to make a forecast of the future ice-off day (with 
 **Answer 11:**
 
 ```{r}
+# Predict ice-off DOY in 2040 using y = b + m*x
+pred_2040 <- fit$coefficients[1] + fit$coefficients[2] * 2040
+pred_2040
 
+# 90% CI using residual quantiles (5% and 95%)
+q05 <- quantile(sunapee$resid, 0.05, na.rm = TRUE)
+q95 <- quantile(sunapee$resid, 0.95, na.rm = TRUE)
+q05
+q95
+
+ci_lower <- pred_2040 + q05
+ci_upper <- pred_2040 + q95
+ci_lower
+ci_upper
+
+ci_width <- ci_upper - ci_lower
+ci_width
 ```
 
 # Is the ice-off day of the year changing more quickly in more recent years at Lake Sunapee?
